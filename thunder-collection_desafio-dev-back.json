@@ -1,0 +1,101 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "desafio-dev-back",
+    "collectionId": "458873d9-1109-4833-8a04-dace7c571d42",
+    "dateExported": "2024-06-26T14:56:48.499Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "bdf30f8e-6c4d-43ef-9c8d-0147f573bb9d",
+            "colId": "458873d9-1109-4833-8a04-dace7c571d42",
+            "containerId": "",
+            "name": "create-user",
+            "url": "http://localhost:8080/user",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-06-23T20:48:15.468Z",
+            "modified": "2024-06-26T14:56:22.986Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"bot8@gmail.com\",\n  \"city\":\"Morro Branco\",\n  \"state\":\"CE\",\n  \"phone\":\"8841181811448\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "a06ff3fa-83f5-4ea4-9bf5-168a344bc5d4",
+            "colId": "458873d9-1109-4833-8a04-dace7c571d42",
+            "containerId": "",
+            "name": "active-user",
+            "url": "http://localhost:8080/user/f23456dd-81a5-43e4-b15b-7a3ca22b5e68/activate",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2024-06-23T20:57:48.044Z",
+            "modified": "2024-06-26T14:56:27.268Z",
+            "headers": []
+        },
+        {
+            "_id": "44f3e827-5733-4b5b-bff7-de29399edf3e",
+            "colId": "458873d9-1109-4833-8a04-dace7c571d42",
+            "containerId": "",
+            "name": "create-schedule",
+            "url": "http://localhost:8080/schedule",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-06-23T23:53:34.129Z",
+            "modified": "2024-06-26T14:56:31.401Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"start_time\":\"2024-06-24T23:58:50-03:00\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "b3b5b1ee-150a-4d59-9fe2-dd9086059c67",
+            "colId": "458873d9-1109-4833-8a04-dace7c571d42",
+            "containerId": "",
+            "name": "deactive-user",
+            "url": "http://localhost:8080/user/f23456dd-81a5-43e4-b15b-7a3ca22b5e68/deactivate",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2024-06-23T20:58:31.319Z",
+            "modified": "2024-06-26T14:56:41.444Z",
+            "headers": []
+        },
+        {
+            "_id": "2f6df278-84d1-4908-a339-bebb0c08fef5",
+            "colId": "458873d9-1109-4833-8a04-dace7c571d42",
+            "containerId": "",
+            "name": "delete-schedule",
+            "url": "http://localhost:8080/schedule/f23456dd-81a5-43e4-b15b-7a3ca22b5e68",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-06-26T14:52:02.330Z",
+            "modified": "2024-06-26T14:56:34.908Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"start_time\":\"2024-06-24T23:58:50-03:00\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "QIl7wcW2m12NwVErw1Gnlme7D5FNK5r1u7nXimeWZTDHTX85EHIiAwgrzTpkl5FmC_7dMIYntqWj0SAUBsN0Xg"
+}

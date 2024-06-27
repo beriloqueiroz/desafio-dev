@@ -1,0 +1,112 @@
+
+version: '3.9'
+services:
+  core:
+    build:
+      context: .
+      dockerfile: "core/Dockerfile"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+      - mgmt_db
+
+  web_worker:
+    build:
+      context: .
+      dockerfile: "web_worker/Dockerfile"
+    depends_on:
+      - kafka
+
+  cache_sync:
+    build:
+      context: .
+      dockerfile: "cache_sync_service/Dockerfile"
+    depends_on:
+      - mgmt_db
+      - redis
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+    - ./.docker/redis/data:/root/redis
+    - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass redis123
+
+  migrate:
+    build:
+      context: ./internal/core/infra/database/migrations/
+      dockerfile: "Dockerfile"
+    container_name: migrate
+    volumes:
+      - ./internal/core/infra/database/migrations:/migrations
+    entrypoint: dockerize -wait tcp://mgmt_db:5432 -timeout 600s migrate
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:postgres@mgmt_db:5432/mgmt?sslmode=disable", "-verbose","up" ]
+    depends_on:
+      - mgmt_db
+
+  mgmt_db:
+    container_name: mgmt_db
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mgmt
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/mgmt_db:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
+
+  zookeeper:
+    restart: always
+    container_name: kafka-like-zookeeper
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    volumes:
+      - ./.docker/zookeeper/data:/var/lib/zookeeper/data
+      - ./.docker/zookeeper/log:/var/lib/zookeeper/log
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    restart: always
+    container_name: kafka-like
+    image: bitnami/kafka:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./.docker/kafka/data:/bitnami
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+      - zookeeper
+    ports:
+      - "8087:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=notification
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181

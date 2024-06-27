@@ -1,0 +1,146 @@
+basePath: /
+definitions:
+  web.InsertUserInputDto:
+    properties:
+      city:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      state:
+        type: string
+    type: object
+  web.createScheduleInputDto:
+    properties:
+      start_time:
+        default: "2024-06-24T23:58:50-03:00"
+        type: string
+    type: object
+  web.output:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: berilo.queiroz@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a notification server .
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Desafio Meli API
+  version: "1.0"
+paths:
+  /schedule:
+    post:
+      consumes:
+      - application/json
+      description: Create new Scheduler
+      parameters:
+      - description: scheduler
+        in: body
+        name: scheduler
+        required: true
+        schema:
+          $ref: '#/definitions/web.createScheduleInputDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.output'
+      summary: Create new Scheduler
+      tags:
+      - scheduler
+  /schedule/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete scheduler
+      parameters:
+      - description: scheduler id (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.output'
+      summary: Delete scheduler
+      tags:
+      - scheduler
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Insert new user
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/web.InsertUserInputDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.output'
+      summary: Insert new user
+      tags:
+      - user
+  /user/{id}/activate:
+    put:
+      consumes:
+      - application/json
+      description: Activate new user
+      parameters:
+      - description: user id (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.output'
+      summary: Activate user
+      tags:
+      - user
+  /user/{id}/deactivate:
+    put:
+      consumes:
+      - application/json
+      description: Deactivate new user
+      parameters:
+      - description: user id (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.output'
+      summary: Deactivate user
+      tags:
+      - user
+swagger: "2.0"

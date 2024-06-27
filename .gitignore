@@ -1,0 +1,3 @@
+.docker/redis
+.docker/mgmt_db
+.docker/kafka
